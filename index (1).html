@@ -1,0 +1,1161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>linki | phone-free wristbands</title>
+<meta name="description" content="Phone-free wristbands for Deaf and hard-of-hearing children and their parents. V1 prototype. Not for sale yet.">
+<meta property="og:title" content="linki | phone-free wristbands">
+<meta property="og:description" content="Phone-free wristbands for Deaf and hard-of-hearing children and their parents. V1 prototype. Not for sale yet.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#5B47E8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%235B47E8'/%3E%3Ctext x='32' y='44' font-family='Arial' font-weight='700' font-size='34' text-anchor='middle' fill='white'%3El%3C/text%3E%3C/svg%3E">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  @property --glow{ syntax:'<color>'; inherits:true; initial-value:#7C6BFF; }
+  :root{
+    --bg:#F5F6FC; --bg2:#ECEEF9; --surface:#FFFFFF; --sunk:#E9ECF8;
+    --ink:#0E1030; --ink2:#434978; --ink3:#596092; --line:#D9DDF1;
+    --a:#5B47E8; --a-fg:#FFFFFF; --a-soft:#E7E3FF;
+    --s-ping:#2F6BFF; --s-action:#C98300; --s-urgent:#E2501F; --s-ok:#12915E; --s-sos:#D81B55;
+    --ring:var(--s-ping); --warn:var(--s-action); --ok:var(--s-ok); --crit:var(--s-sos);
+    --chip-ok-bg:#D4F3E4; --chip-next-bg:#DCE6FF; --chip-plan-bg:#E6E8F4;
+    --glow-page:rgba(91,71,232,.16);
+    --band:#A99BFF;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#07080F; --bg2:#0C0E1B; --surface:#12152A; --sunk:#191D38;
+      --ink:#F2F4FF; --ink2:#B5BBDD; --ink3:#8F97C2; --line:#262B50;
+      --a:#9C8CFF; --a-fg:#0A0B14; --a-soft:#241F52;
+      --s-ping:#5B9BFF; --s-action:#FFC247; --s-urgent:#FF6A3D; --s-ok:#38D996; --s-sos:#FF4F7E;
+      --chip-ok-bg:#0F3A2B; --chip-next-bg:#1B2F66; --chip-plan-bg:#232950;
+      --glow-page:rgba(124,107,255,.22);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#07080F; --bg2:#0C0E1B; --surface:#12152A; --sunk:#191D38;
+    --ink:#F2F4FF; --ink2:#B5BBDD; --ink3:#8F97C2; --line:#262B50;
+    --a:#9C8CFF; --a-fg:#0A0B14; --a-soft:#241F52;
+    --s-ping:#5B9BFF; --s-action:#FFC247; --s-urgent:#FF6A3D; --s-ok:#38D996; --s-sos:#FF4F7E;
+    --chip-ok-bg:#0F3A2B; --chip-next-bg:#1B2F66; --chip-plan-bg:#232950;
+    --glow-page:rgba(124,107,255,.22);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; scroll-padding-top:100px}
+  html[data-calm="1"]{scroll-behavior:auto}
+  body{
+    margin:0; color:var(--ink);
+    background:radial-gradient(900px 520px at 88% -6%, var(--glow-page), transparent 70%) no-repeat, var(--bg);
+    font-family:'Atkinson Hyperlegible','Noto Sans Devanagari',system-ui,sans-serif;
+    font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    padding-inline:20px; padding-block:0 56px;
+  }
+  h1,h2,h3{font-family:'Bricolage Grotesque','Noto Sans Devanagari',system-ui,sans-serif; font-weight:700; margin:0; letter-spacing:-0.03em; text-wrap:balance; line-height:1.05}
+  p{margin:0}
+  :focus-visible{outline:3px solid var(--s-ping); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:1180px; margin-inline:auto}
+  [data-calm="1"] *, [data-calm="1"] *::before, [data-calm="1"] *::after{animation:none !important; transition:none !important}
+
+  /* ---------- floating header ---------- */
+  .top{position:sticky; top:12px; z-index:30; margin-top:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:8px 8px 8px 24px; border-radius:999px; border:1px solid var(--line); background:color-mix(in srgb, var(--surface) 80%, transparent); -webkit-backdrop-filter:blur(16px) saturate(1.3); backdrop-filter:blur(16px) saturate(1.3)}
+  .mark{font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:1.7rem; letter-spacing:-0.05em; color:var(--ink); text-decoration:none; line-height:1; margin-right:auto}
+  .seg{display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden}
+  .seg button{font:inherit; font-size:.9rem; border:0; background:transparent; color:var(--ink2); padding:6px 14px; cursor:pointer; min-height:38px}
+  .seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+  .tog{font:inherit; font-size:.9rem; border:1px solid var(--line); background:transparent; color:var(--ink2); border-radius:999px; padding:6px 14px; min-height:38px; cursor:pointer}
+  .tog[aria-pressed="true"]{border-color:var(--a); color:var(--ink); background:var(--a-soft)}
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; font:inherit; font-weight:700; text-decoration:none; border:1.5px solid var(--a); background:var(--a); color:var(--a-fg); border-radius:999px; padding:13px 26px; min-height:50px; cursor:pointer; box-shadow:0 10px 30px -12px var(--a)}
+  .btn.ghost{background:transparent; color:var(--ink); border-color:var(--line); box-shadow:none}
+  .btn.ghost:hover{border-color:var(--ink)}
+  .btn.small{padding:8px 18px; min-height:42px; font-size:.95rem; box-shadow:none}
+  .btn:disabled{opacity:.5; cursor:default}
+
+  .chip-fixed{position:fixed; left:14px; bottom:14px; z-index:40; display:flex; align-items:center; gap:9px; padding:9px 16px; border-radius:999px; border:1px solid var(--line); background:color-mix(in srgb, var(--surface) 88%, transparent); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); font-size:.86rem; color:var(--ink2); max-width:calc(100vw - 28px)}
+  .chip-fixed .dot{width:9px; height:9px; border-radius:50%; background:var(--s-action); flex:none; box-shadow:0 0 10px var(--s-action)}
+  .chip-fixed .short{display:none}
+
+  /* ---------- hero split ---------- */
+  .split2{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.02fr); grid-template-areas:"intro stage" "gest stage"; column-gap:56px; align-items:start; padding-block:56px 24px}
+  .intro{grid-area:intro}
+  .gest{grid-area:gest; margin-top:52px}
+  .stage-wrap{grid-area:stage; position:sticky; top:96px; align-self:start}
+  .intro h1{font-size:clamp(2.5rem,4.6vw,4.2rem); font-weight:800; letter-spacing:-0.045em; line-height:.98}
+  .intro .sub{margin-top:22px; font-size:1.25rem; color:var(--ink2); max-width:34ch}
+  .intro .cta{margin-top:30px; display:flex; gap:12px; flex-wrap:wrap}
+  .intro .isl{margin-top:26px; font-size:.95rem; color:var(--ink3); max-width:46ch; border-left:3px solid var(--a); padding-left:14px}
+  .islbtn{margin-top:12px}
+
+  .gest h2{font-size:clamp(1.7rem,3vw,2.4rem)}
+  .gest > p{margin-top:10px; color:var(--ink2)}
+  .rows{margin-top:20px; display:flex; flex-direction:column; gap:10px}
+  .grow-row{--c:var(--a); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 16px; align-items:center; padding:14px 16px 14px 20px; border:1px solid var(--line); border-radius:20px; background:var(--surface); position:relative; transition:background .25s, border-color .25s}
+  .grow-row::before{content:""; position:absolute; left:0; top:14px; bottom:14px; width:4px; border-radius:0 4px 4px 0; background:var(--c)}
+  .grow-row.on{background:color-mix(in srgb, var(--c) 14%, var(--surface)); border-color:var(--c)}
+  .grow-row[data-key="tap"]{--c:var(--s-ping)} .grow-row[data-key="hold"]{--c:var(--s-action)} .grow-row[data-key="long"]{--c:var(--s-urgent)}
+  .grow-row[data-key="double"]{--c:var(--a)} .grow-row[data-key="ctap"]{--c:var(--s-ok)} .grow-row[data-key="csos"]{--c:var(--s-sos)}
+  .grow-row .who{grid-column:1; font-size:.85rem; color:var(--ink3)}
+  .grow-row h3{grid-column:1; font-size:1.2rem; letter-spacing:-0.02em}
+  .grow-row p{grid-column:1; color:var(--ink2); font-size:.98rem}
+  .grow-row .btn{grid-column:2; grid-row:1 / span 3; align-self:center}
+
+  /* ---------- simulator ---------- */
+  .stage{--glow:#7C6BFF; transition:--glow .7s ease; background:radial-gradient(75% 60% at 50% 56%, color-mix(in srgb, var(--glow) 40%, transparent) 0%, transparent 72%), linear-gradient(180deg,#0F1234 0%,#070816 100%); border:1px solid #2A3070; border-radius:36px; padding:20px 20px 22px; color:#E8ECFB; position:relative; overflow:hidden; box-shadow:0 40px 80px -40px rgba(60,40,200,.55)}
+  .stage::before{content:""; position:absolute; inset:0; background-image:radial-gradient(rgba(255,255,255,.1) 1px, transparent 1.4px); background-size:24px 24px; pointer-events:none; mask-image:linear-gradient(#000 0%, transparent 75%); -webkit-mask-image:linear-gradient(#000 0%, transparent 75%)}
+  .stage > *{position:relative}
+  .stage-head{display:flex; align-items:flex-start; justify-content:space-between; gap:12px}
+  .stage-head h2{font-size:1rem; font-weight:700; font-family:'Atkinson Hyperlegible','Noto Sans Devanagari',sans-serif; letter-spacing:0; color:#fff}
+  .stage-head p{font-size:.85rem; color:#AAB3DD; margin-top:2px}
+  .stage .btn.ghost{color:#E8ECFB; border-color:#4B5599}
+  .row{display:grid; grid-template-columns:auto minmax(40px,1fr) auto; align-items:center; column-gap:6px; justify-content:center; padding-block:12px 0}
+  .col{display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center}
+  .col .name{font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1.05rem; letter-spacing:-0.02em; line-height:1.2; color:#fff}
+  .col .desc{font-size:.8rem; color:#AAB3DD; max-width:16ch; line-height:1.35}
+  .link-label{grid-column:1/-1; text-align:center; font-size:.82rem; color:#AAB3DD; margin-top:10px}
+
+  .band{--w:clamp(96px,24vw,126px); width:var(--w); font-size:calc(var(--w) / 10); position:relative; display:flex; flex-direction:column; align-items:center}
+  .strap{width:6.6em; height:4.4em; background:var(--strapc); position:relative}
+  .strap.up{border-radius:1.3em 1.3em .5em .5em}
+  .strap.down{border-radius:.5em .5em 1.3em 1.3em}
+  .strap::after{content:""; position:absolute; left:50%; translate:-50% 0; width:1.2em; height:2.9em; top:.7em; background:radial-gradient(circle at 50% 50%, rgba(0,0,0,.3) 0 .3em, transparent .34em) 0 0 / 100% 1em repeat-y}
+  .body{width:10em; height:15em; border-radius:3.4em; background:linear-gradient(160deg, color-mix(in srgb, var(--bodyc) 82%, #fff) 0%, var(--bodyc) 38%, color-mix(in srgb, var(--bodyc) 82%, #000) 100%); position:relative; margin-block:-.7em; z-index:1; box-shadow:inset 0 .2em .4em rgba(255,255,255,.28), inset 0 -.35em .7em rgba(0,0,0,.22), 0 1.1em 1.8em -.8em rgba(0,0,0,.7)}
+  .band.parent{--bodyc:#23252F; --strapc:#2E303C}
+  .band.child{--bodyc:var(--band); --strapc:color-mix(in srgb, var(--band) 84%, #000)}
+  .wm{position:absolute; left:0; right:0; bottom:1em; text-align:center; font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:1.1em; letter-spacing:-.05em; color:rgba(255,255,255,.3); pointer-events:none}
+
+  .led{position:absolute; left:50%; top:46%; translate:-50% -50%; width:8em; height:8em; border-radius:50%; border:.42em solid var(--ledc,#5B9BFF); opacity:.45; box-shadow:0 0 1.8em var(--ledc,#5B9BFF), inset 0 0 1em color-mix(in srgb, var(--ledc,#5B9BFF) 50%, transparent); pointer-events:none; transition:opacity .2s}
+  .parent[data-led="awaiting"] .led{--ledc:#5B9BFF; opacity:1; animation:pulse 1s ease-in-out infinite}
+  .parent[data-led="solid"] .led{--ledc:#38D996; opacity:1}
+  .parent[data-led="timeout"] .led{--ledc:#FFC247; opacity:1; animation:pulse 1.8s ease-in-out infinite}
+  .parent[data-led="sos"] .led{--ledc:#FF4F7E; opacity:1; animation:pulse .36s steps(2,jump-none) infinite}
+  @keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+  .pbtn{position:absolute; left:50%; top:46%; translate:-50% -50%; width:6.2em; height:6.2em; border-radius:50%; border:0; padding:0; cursor:pointer; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; background:radial-gradient(circle at 35% 28%, #555a6e, #20222b 72%); box-shadow:0 .35em .7em rgba(0,0,0,.5), inset 0 .12em .2em rgba(255,255,255,.2); transition:transform .08s}
+  .pbtn.down{transform:scale(.94)}
+  .pbtn svg{position:absolute; inset:-.5em; width:calc(100% + 1em); height:calc(100% + 1em); rotate:-90deg; pointer-events:none}
+  .pbtn .arc{fill:none; stroke:#5B9BFF; stroke-width:4; stroke-linecap:round; stroke-dasharray:289; stroke-dashoffset:289}
+  .pbtn .tick{stroke:rgba(255,255,255,.55); stroke-width:2}
+  .pbtn[data-hint="1"]::after{content:""; position:absolute; inset:-1.3em; border-radius:50%; border:.2em solid #5B9BFF; opacity:0; animation:hint 2s ease-out infinite}
+  @keyframes hint{0%{opacity:.7; transform:scale(.8)}100%{opacity:0; transform:scale(1.15)}}
+
+  .screen{position:absolute; left:50%; top:.9em; translate:-50% 0; width:7.6em; height:10.6em; border-radius:2.2em; background:#05060A; color:#F4F6FF; display:grid; place-items:center; text-align:center; overflow:hidden; box-shadow:0 0 0 .14em rgba(255,255,255,.1)}
+  .screen .inner{display:flex; flex-direction:column; align-items:center; gap:.55em; padding:.6em}
+  .screen svg, .scr svg{fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round}
+  .screen svg{width:3.1em; height:3.1em}
+  .screen .w, .scr .w{font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:1.2em; letter-spacing:.03em; line-height:1}
+  .screen .s{font-size:.64em; opacity:.7; line-height:1.2}
+  .screen .idle svg{width:1.9em; height:1.9em; opacity:.8}
+  .screen.t-ping, .scr.t-ping{color:#7DB1FF}
+  .screen.t-action, .scr.t-action{color:#FFC247}
+  .screen.t-urgent, .scr.t-urgent{background:#8A2410; color:#fff}
+  .screen.t-urgent{animation:flash 1s ease-in-out infinite}
+  .screen.t-ok, .scr.t-ok{color:#4BE6A6}
+  .screen.t-sos, .scr.t-sos{color:#FF7A9E}
+  @keyframes flash{50%{background:#B33216}}
+  .cbtn{position:absolute; left:50%; bottom:.55em; translate:-50% 0; width:2.4em; height:2.4em; border-radius:50%; border:.14em solid rgba(255,255,255,.75); background:rgba(0,0,0,.3); padding:0; cursor:pointer; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none}
+  .cbtn::before{content:""; position:absolute; inset:-.8em}
+  .cbtn.down{background:rgba(0,0,0,.55); transform:scale(.92)}
+  .cbtn svg{position:absolute; inset:-.35em; width:calc(100% + .7em); height:calc(100% + .7em); rotate:-90deg; pointer-events:none}
+  .cbtn .arc{fill:none; stroke:#FF7A9E; stroke-width:5; stroke-linecap:round; stroke-dasharray:289; stroke-dashoffset:289}
+  .cbtn.static{pointer-events:none}
+  .band.child.buzzing{animation:shake .09s linear infinite}
+  .band.child.buzzing .body{box-shadow:0 0 0 .5em color-mix(in srgb, var(--band) 50%, transparent), inset 0 .2em .4em rgba(255,255,255,.28), 0 1.1em 1.8em -.8em rgba(0,0,0,.7)}
+  @keyframes shake{0%{translate:-.28em 0}50%{translate:.28em 0}100%{translate:-.28em 0}}
+
+  .link{position:relative; height:90px; min-width:40px}
+  .link svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible}
+  .link .path{stroke:#5560A8; stroke-width:2; stroke-dasharray:3 7; stroke-linecap:round; fill:none}
+  .pkt{position:absolute; top:50%; left:0; width:14px; height:14px; margin-top:-7px; border-radius:50%; background:#7DB1FF; opacity:0; box-shadow:0 0 16px #7DB1FF}
+  .pkt.go-c{animation:fly .5s ease-in-out forwards}
+  .pkt.go-p{background:#FF7A9E; box-shadow:0 0 16px #FF7A9E; animation:flyback .5s ease-in-out forwards}
+  @keyframes fly{0%{left:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:calc(100% - 14px);opacity:0}}
+  @keyframes flyback{0%{left:calc(100% - 14px);opacity:0}12%{opacity:1}88%{opacity:1}100%{left:0;opacity:0}}
+  [data-calm="1"] .pkt.go-c, [data-calm="1"] .pkt.go-p{opacity:1; left:calc(50% - 7px)}
+
+  .wavebox{display:flex; align-items:center; justify-content:center; gap:10px; margin-top:12px; font-size:.82rem; color:#AAB3DD}
+  .wave{display:flex; gap:3px; align-items:center; height:26px}
+  .wave span{width:4px; height:4px; background:#4B5599; border-radius:2px}
+  .wave.on span{background:#A8C8FF; animation:bar .16s ease-in-out infinite alternate; animation-delay:calc(var(--i) * -23ms)}
+  @keyframes bar{from{height:4px}to{height:24px}}
+  [data-calm="1"] .wave.on span{height:16px}
+
+  .tools{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 16px; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,.12)}
+  .sw-label{font-size:.85rem; color:#AAB3DD}
+  .swatches{display:flex; gap:10px; margin-top:6px}
+  .swatches button{width:34px; height:34px; border-radius:50%; border:2px solid rgba(255,255,255,.35); background:var(--c); cursor:pointer; padding:0}
+  .swatches button[aria-pressed="true"]{outline:3px solid #7DB1FF; outline-offset:2px}
+  .live{margin-top:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.1); border-radius:18px; padding:12px 14px; min-height:96px}
+  .live h3{font-size:.9rem; font-weight:700; color:#AAB3DD; margin-bottom:4px; font-family:'Atkinson Hyperlegible','Noto Sans Devanagari',sans-serif; letter-spacing:0}
+  .live ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px}
+  .live li{font-size:.95rem; line-height:1.4; color:#C9D0EE}
+  .live li:first-child{font-weight:700; color:#fff}
+
+  /* ---------- sections ---------- */
+  section{padding-block:64px}
+  .sec-head{max-width:760px; margin-bottom:30px}
+  .sec-head h2{font-size:clamp(2rem,4vw,3.1rem); font-weight:800; letter-spacing:-0.04em}
+  .sec-head p{margin-top:14px; color:var(--ink2); font-size:1.12rem}
+
+  .vocab{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px}
+  .vc{--c:var(--a); background:radial-gradient(130% 55% at 50% 0%, color-mix(in srgb, var(--c) 24%, transparent), transparent 75%), var(--surface); border:1px solid var(--line); border-radius:26px; padding:18px 16px 20px; display:flex; flex-direction:column; gap:10px}
+  .scr{--w:78px; font-size:calc(var(--w)/10); width:8.2em; height:11em; border-radius:2.4em; background:#05060A; color:#F4F6FF; display:grid; place-items:center; text-align:center; box-shadow:0 0 0 .4em color-mix(in srgb, var(--c) 35%, transparent), 0 .8em 2em -.6em var(--c); align-self:center; margin-block:6px 10px}
+  .scr .inner{display:flex; flex-direction:column; align-items:center; gap:.55em}
+  .scr svg{width:3.2em; height:3.2em}
+  .vc h3{font-size:1.3rem; letter-spacing:-0.03em}
+  .vc .how{font-size:.88rem; color:var(--ink3); margin-top:auto}
+  .vc p{color:var(--ink2); font-size:.96rem}
+  .rhythm{display:flex; gap:6px; height:12px; align-items:center}
+  .rhythm i{display:block; height:8px; width:var(--w); background:var(--c); border-radius:4px; opacity:.3; animation:beat var(--cyc,2.4s) ease-in-out infinite; animation-delay:calc(var(--k) * .28s)}
+  @keyframes beat{0%,55%,100%{opacity:.3}15%,35%{opacity:1}}
+  .ringsw{display:inline-block; width:22px; height:22px; border-radius:50%; border:4px solid var(--c); box-shadow:0 0 12px var(--c)}
+  .ringsw.blink{animation:pulse .5s steps(2,jump-none) infinite}
+
+  .facts{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px}
+  .fact{background:var(--surface); border:1px solid var(--line); border-radius:26px; padding:22px 20px 24px}
+  .fact .ico{display:grid; place-items:center; width:48px; height:48px; border-radius:16px; background:var(--a-soft); color:var(--a); margin-bottom:18px}
+  .fact .ico svg{width:26px; height:26px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+  .fact h3{font-size:1.2rem; margin-bottom:8px; letter-spacing:-0.025em}
+  .fact p{color:var(--ink2); font-size:.98rem}
+
+  .show{background:radial-gradient(70% 60% at 50% 70%, rgba(124,107,255,.35), transparent 75%), linear-gradient(180deg,#10133A 0%,#070816 100%); border:1px solid #2A3070; border-radius:36px; padding:44px 24px 34px; display:flex; flex-wrap:wrap; justify-content:center; gap:34px 38px; color:#E8ECFB}
+  .show .it{display:flex; flex-direction:column; align-items:center; gap:14px}
+  .show .band{--w:clamp(92px,13vw,128px)}
+  .show .cap{font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:1rem; letter-spacing:-0.02em; color:#fff}
+  .show .band.parent .led{--ledc:#5B9BFF; opacity:1}
+  .show .pbtn{cursor:default}
+  .show-note{margin-top:18px; color:var(--ink2); font-size:1rem; max-width:70ch}
+
+  .log{list-style:none; margin:0; padding:0 0 0 26px; border-left:2px solid var(--line); display:flex; flex-direction:column; gap:20px; max-width:780px}
+  .log li{position:relative; display:flex; gap:14px; align-items:baseline; flex-wrap:wrap}
+  .log li::before{content:""; position:absolute; left:-34px; top:.5em; width:14px; height:14px; border-radius:50%; background:var(--bg); border:2px solid var(--ink3)}
+  .log li.done::before{background:var(--s-ok); border-color:var(--s-ok); box-shadow:0 0 12px var(--s-ok)}
+  .log li.next::before{background:var(--s-ping); border-color:var(--s-ping); box-shadow:0 0 12px var(--s-ping)}
+  .chip{font-size:.82rem; font-weight:700; padding:3px 12px; border-radius:999px; flex:none; min-width:76px; text-align:center}
+  .chip.done{background:var(--chip-ok-bg); color:var(--s-ok)}
+  .chip.next{background:var(--chip-next-bg); color:var(--s-ping)}
+  .chip.planned{background:var(--chip-plan-bg); color:var(--ink2)}
+  .log .t{flex:1 1 280px; font-size:1.05rem}
+  .log .d{color:var(--ink3); font-size:.9rem}
+
+  .know{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+  .know > div{background:var(--surface); border:1px solid var(--line); border-radius:28px; padding:24px}
+  .know > div:first-child{box-shadow:inset 0 4px 0 var(--s-ok)}
+  .know > div:last-child{box-shadow:inset 0 4px 0 var(--s-action)}
+  .know h3{font-size:1.25rem; margin-bottom:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  .know ul{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px}
+  .know li{padding:12px 14px; border-radius:14px; background:var(--sunk); color:var(--ink2)}
+  .hint{font-weight:400; font-size:.88rem; color:var(--ink3)}
+
+  .limbox{background:var(--surface); border:1px solid var(--line); border-left:6px solid var(--s-action); border-radius:28px; padding:28px 32px; max-width:860px}
+  .limits{margin:0; padding-left:1.2em; display:flex; flex-direction:column; gap:12px; color:var(--ink2); font-size:1.08rem}
+  .limits strong{color:var(--ink)}
+
+  .join{background:radial-gradient(90% 70% at 0% 0%, color-mix(in srgb, var(--a) 22%, transparent), transparent 70%), var(--surface); border:1px solid color-mix(in srgb, var(--a) 45%, var(--line)); border-radius:40px; padding:44px; display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:44px}
+  .join h2{font-size:clamp(2rem,3.8vw,3rem); font-weight:800; letter-spacing:-0.04em}
+  .join .lead{margin-top:16px; color:var(--ink2); font-size:1.1rem}
+  .counter{margin-top:26px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+  .counter div{border-top:3px solid var(--a); padding-top:10px}
+  .counter .n{font-family:'Bricolage Grotesque',sans-serif; font-size:2.2rem; font-weight:800; letter-spacing:-0.04em; line-height:1.05; font-variant-numeric:tabular-nums}
+  .counter .l{font-size:.85rem; color:var(--ink3); line-height:1.3}
+  form{display:flex; flex-direction:column; gap:14px}
+  label{font-size:.95rem; font-weight:700; display:flex; flex-direction:column; gap:6px}
+  input,select{font:inherit; color:var(--ink); background:var(--bg); border:1.5px solid var(--line); border-radius:14px; padding:12px 14px; min-height:50px; width:100%}
+  input:focus,select:focus{border-color:var(--a)}
+  .check{flex-direction:row; align-items:flex-start; gap:10px; font-weight:400; color:var(--ink2)}
+  .check input{width:22px; min-height:22px; margin-top:2px; accent-color:var(--a)}
+  .status{min-height:1.5em; font-weight:700; color:var(--ink2)}
+
+  .need{margin:0; padding:0; list-style:none; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px}
+  .need li{border:1.5px dashed var(--ink3); border-radius:22px; padding:20px; color:var(--ink2); min-height:96px; display:flex; align-items:center}
+
+  details{border:1px solid var(--line); background:var(--surface); border-radius:20px; padding:4px 22px; margin-bottom:10px}
+  summary{cursor:pointer; font-weight:700; font-size:1.08rem; min-height:52px; display:flex; align-items:center; justify-content:space-between; gap:12px; list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+"; font-size:1.6rem; font-weight:400; color:var(--a); line-height:1; transition:rotate .2s}
+  details[open] summary::after{rotate:45deg}
+  details p{padding-bottom:16px; color:var(--ink2); max-width:70ch}
+  .faq{max-width:860px}
+
+  footer{border-top:1px solid var(--line); padding-top:28px; color:var(--ink3); font-size:.95rem; display:flex; flex-direction:column; gap:6px; overflow:hidden}
+  .bigmark{font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:clamp(5rem,22vw,15rem); letter-spacing:-0.07em; line-height:.9; color:color-mix(in srgb, var(--ink) 9%, transparent); margin-top:18px; user-select:none}
+
+  .world{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px}
+  .stat{background:var(--surface); border:1px solid var(--line); border-radius:28px; padding:26px 22px 24px; display:flex; flex-direction:column; gap:10px}
+  .stat .big{font-family:'Bricolage Grotesque',sans-serif; font-weight:800; letter-spacing:-0.05em; line-height:.95; font-size:clamp(2.6rem,4.6vw,3.8rem); color:var(--a); font-variant-numeric:tabular-nums}
+  .stat .big small{font-size:.4em; letter-spacing:-0.02em; font-weight:700; margin-left:.15em}
+  .stat .pc{margin-left:0}
+  .stat p{color:var(--ink2); font-size:1rem}
+  .stat .src{margin-top:auto; font-size:.84rem; color:var(--ink3)}
+  .world-note{margin-top:22px; max-width:70ch; font-size:1.12rem; color:var(--ink2); border-left:3px solid var(--a); padding-left:16px}
+  .sources{margin-top:22px; font-size:.92rem; color:var(--ink3); max-width:80ch}
+  .sources ul{margin:6px 0 0; padding-left:1.2em; display:flex; flex-direction:column; gap:4px}
+  .sources a{color:var(--a); text-underline-offset:3px}
+  @media (max-width:1060px){ .world{grid-template-columns:repeat(2,minmax(0,1fr))} }
+  @media (max-width:620px){ .world{grid-template-columns:1fr} }
+  @media (max-width:1060px){
+    .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .need{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (max-width:980px){
+    .split2{grid-template-columns:1fr; grid-template-areas:"intro" "stage" "gest"; row-gap:30px; padding-top:36px}
+    .stage-wrap{position:static}
+    .gest{margin-top:0}
+    .vocab{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .join{grid-template-columns:1fr; padding:28px}
+    .know{grid-template-columns:1fr}
+    html{scroll-padding-top:120px}
+  }
+  @media (max-width:620px){
+    body{font-size:16.5px}
+    .top{border-radius:28px; padding:8px 8px 8px 18px}
+    .top .btn{display:none}
+    .top{gap:8px}
+    .seg button{padding:6px 11px}
+    .tog{padding:6px 11px}
+    .chip-fixed{font-size:.78rem; padding:6px 12px; pointer-events:none}
+    .vocab{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .facts,.need{grid-template-columns:1fr}
+    .stage{padding:16px 12px 18px; border-radius:28px}
+    .col .desc{display:none}
+    .grow-row{grid-template-columns:1fr}
+    .grow-row .btn{grid-column:1; grid-row:auto; justify-self:start; margin-top:8px}
+    .chip-fixed .long{display:none}
+    .chip-fixed .short{display:inline}
+    .show{padding:30px 12px 26px; gap:26px 18px; border-radius:28px}
+    .limbox{padding:22px}
+  }
+
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="#top" id="top" aria-label="linki">linki</a>
+    <button type="button" class="tog" id="calm" aria-pressed="false" data-i18n="calm">Calm motion</button>
+    <a class="btn small" href="#join" data-i18n="nav.join">Apply for the pilot</a>
+  </header>
+  <div class="chip-fixed" role="note"><span class="dot" aria-hidden="true"></span><span data-i18n="strip">V1 Pilot Edition. Hand-built prototype. Not certified. Not for sale.</span></div>
+
+  <main>
+    <div class="split2">
+      <div class="intro">
+        <h1 data-i18n="hero.h1">One tap on your wrist. A buzz on theirs.</h1>
+        <p class="sub" data-i18n="hero.sub">linki is a pair of phone-free wristbands for Deaf and hard-of-hearing children and their parents. The two bands talk to each other directly.</p>
+        <div class="cta">
+          <a class="btn" href="#join" data-i18n="nav.join">Apply for the pilot</a>
+          <a class="btn ghost" href="#build" data-i18n="hero.build">See what is built</a>
+        </div>
+        <p class="isl" data-i18n="hero.isl">Every video we publish has captions. Any video with speech will also have sign-language interpretation.</p>
+        <span data-isl="hero"></span>
+      </div>
+
+      <div class="stage-wrap" id="try">
+        <div class="stage">
+          <div class="stage-head">
+            <div>
+              <h2 data-i18n="stage.title">Website simulation of the V1 firmware</h2>
+              <p data-i18n="stage.sim">Press and hold the buttons. This is not a video and not a real unit.</p>
+            </div>
+            <button type="button" class="btn ghost small" id="reset" data-i18n="reset">Reset</button>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="band parent" id="pBand" data-led="idle">
+                <div class="strap up"></div>
+                <div class="body">
+                  <div class="led"></div>
+                  <button type="button" class="pbtn" id="pBtn" data-hint="1" aria-label="Parent Band button. Tap, hold, or double tap.">
+                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                      <circle class="arc" id="pArc" cx="50" cy="50" r="46"/>
+                      <line class="tick" x1="50" y1="1" x2="50" y2="9" transform="rotate(131 50 50)"/>
+                    </svg>
+                  </button>
+                  <span class="wm">linki</span>
+                </div>
+                <div class="strap down"></div>
+              </div>
+              <div class="name" data-i18n="band.parent">Parent Band</div>
+              <div class="desc" data-i18n="band.parent.d">One button, a light ring, no screen</div>
+            </div>
+
+            <div class="link" aria-hidden="true">
+              <svg viewBox="0 0 100 90" preserveAspectRatio="none"><path class="path" d="M0 45H100" vector-effect="non-scaling-stroke"/></svg>
+              <span class="pkt" id="pkt"></span>
+            </div>
+
+            <div class="col">
+              <div class="band child" id="cBand">
+                <div class="strap up"></div>
+                <div class="body">
+                  <div class="screen" id="cScreen" aria-hidden="true"></div>
+                  <button type="button" class="cbtn" id="cBtn" aria-label="Child Band button. Tap to say Got it. Hold for SOS.">
+                    <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="arc" id="cArc" cx="50" cy="50" r="46"/></svg>
+                  </button>
+                </div>
+                <div class="strap down"></div>
+              </div>
+              <div class="name" data-i18n="band.child">Child Band</div>
+              <div class="desc" data-i18n="band.child.d">Screen, buzz, one button</div>
+            </div>
+
+            <p class="link-label" data-i18n="link.label">Direct radio link: no phone, no router, no internet</p>
+          </div>
+
+          <div class="wavebox" aria-hidden="true">
+            <span data-i18n="wave.label">Vibration</span>
+            <div class="wave" id="wave"></div>
+          </div>
+
+          <div class="tools">
+            <div>
+              <div class="sw-label" data-i18n="colour.label">Child Band colour</div>
+              <div class="swatches" role="group" aria-label="Child Band colour" id="swatches"></div>
+            </div>
+          </div>
+
+          <div class="live" aria-live="polite">
+            <h3 data-i18n="live.title">What just happened</h3>
+            <ol id="liveList"></ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="gest" id="gestures">
+        <h2 data-i18n="g.h2">Two buttons, six gestures</h2>
+        <p data-i18n="g.p">Each row is one thing a button can say. Press Show me, or try the real buttons on the simulator. The row lights up when you do.</p>
+        <div class="rows">
+          <div class="grow-row" data-key="tap">
+            <span class="who" data-i18n="who.parent">Parent Band</span>
+            <h3 data-i18n="g.tap.t">Tap</h3>
+            <p data-i18n="g.tap.d">Ping. The child feels one short buzz and sees LOOK.</p>
+            <button type="button" class="btn ghost small play" data-play="tap" data-i18n="g.play">Show me</button>
+          </div>
+          <div class="grow-row" data-key="hold">
+            <span class="who" data-i18n="who.parent">Parent Band</span>
+            <h3 data-i18n="g.hold.t">Hold half a second</h3>
+            <p data-i18n="g.hold.d">Action. Shows DINNER at home, or WAIT outdoors.</p>
+            <button type="button" class="btn ghost small play" data-play="hold" data-i18n="g.play">Show me</button>
+          </div>
+          <div class="grow-row" data-key="long">
+            <span class="who" data-i18n="who.parent">Parent Band</span>
+            <h3 data-i18n="g.long.t">Hold past 1 second</h3>
+            <p data-i18n="g.long.d">Urgent. COME NOW at home, STOP outdoors. It buzzes again every 2.5 seconds until the child taps Got it.</p>
+            <button type="button" class="btn ghost small play" data-play="long" data-i18n="g.play">Show me</button>
+          </div>
+          <div class="grow-row" data-key="double">
+            <span class="who" data-i18n="who.parent">Parent Band</span>
+            <h3 data-i18n="g.double.t">Double tap</h3>
+            <p data-i18n="g.double.d">Switch between Home and Outdoor. Two Pings go out on the way.</p>
+            <button type="button" class="btn ghost small play" data-play="double" data-i18n="g.play">Show me</button>
+          </div>
+          <div class="grow-row" data-key="ctap">
+            <span class="who" data-i18n="who.child">Child Band</span>
+            <h3 data-i18n="g.ctap.t">Tap</h3>
+            <p data-i18n="g.ctap.d">Got it. Confirms an urgent message. The Parent ring turns green.</p>
+            <button type="button" class="btn ghost small play" data-play="ctap" data-i18n="g.play">Show me</button>
+          </div>
+          <div class="grow-row" data-key="csos">
+            <span class="who" data-i18n="who.child">Child Band</span>
+            <h3 data-i18n="g.csos.t">Hold 1 second</h3>
+            <p data-i18n="g.csos.d">SOS. The Parent ring flashes red until the parent taps.</p>
+            <button type="button" class="btn ghost small play" data-play="csos" data-i18n="g.play">Show me</button>
+          </div>
+        </div>
+        <span data-isl="gestures"></span>
+      </div>
+    </div>
+
+    <section id="world">
+      <div class="sec-head">
+        <h2 data-i18n="w.h2">This is a worldwide problem</h2>
+        <p data-i18n="w.p">Hearing loss is common, and most people with disabling hearing loss live in low- and middle-income countries. These are the figures we have checked against their sources.</p>
+      </div>
+      <div class="world">
+        <div class="stat"><div class="big">430<small data-i18n="w.m">million</small></div><p data-i18n="w.1">people need rehabilitation for disabling hearing loss. That is over 5% of the world.</p><span class="src" data-i18n="w.src.who">WHO, March 2026</span></div>
+        <div class="stat"><div class="big">95.1<small data-i18n="w.m">million</small></div><p data-i18n="w.2">children aged 5 to 19 live with hearing loss.</p><span class="src" data-i18n="w.src.who">WHO, March 2026</span></div>
+        <div class="stat"><div class="big">~80<small class="pc">%</small></div><p data-i18n="w.3">of people with disabling hearing loss live in low- and middle-income countries.</p><span class="src" data-i18n="w.src.who">WHO, March 2026</span></div>
+        <div class="stat"><div class="big">90<small class="pc">%+</small></div><p data-i18n="w.4">of deaf children are born to hearing parents.</p><span class="src" data-i18n="w.src.ndcs">NDCS, citing a 2004 study of US children</span></div>
+      </div>
+      <p class="world-note" data-i18n="w.note">Most deaf children have hearing parents, and many families are still finding a way to talk. linki is not a language and does not replace one. It is one simple signal between a parent and a child, for everyday moments.</p>
+      <div class="sources"><span data-i18n="w.src.h">Where the numbers come from</span>
+        <ul>
+          <li><a href="https://www.who.int/News-Room/Fact-Sheets/Detail/Deafness-and-Hearing-Loss" target="_blank" rel="noopener">World Health Organization: Deafness and hearing loss fact sheet</a></li>
+          <li><a href="https://www.ndcs.org.uk/about-us/news-and-media/deaf-statistics" target="_blank" rel="noopener">National Deaf Children's Society (UK): Deaf statistics</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="signals">
+      <div class="sec-head">
+        <h2 data-i18n="v.h2">Five signals, each one different</h2>
+        <p data-i18n="v.p">Each signal has its own buzz rhythm and its own screen, so it can be told apart by feel and by sight. Whether children find them easy to learn is what the pilot will test.</p>
+      </div>
+      <div class="vocab">
+        <div class="vc">
+          <div class="scr t-ping" aria-hidden="true"><div class="inner" data-ico="eye"><span class="w">LOOK</span></div></div>
+          <h3 data-i18n="v.ping">Ping</h3>
+          <div class="rhythm" aria-hidden="true" style="--cyc:2.4s"><i style="--w:18px;--k:0"></i></div>
+          <p data-i18n="v.ping.d">One short buzz.</p>
+          <span class="how" data-i18n="v.ping.h">Parent: tap</span>
+        </div>
+        <div class="vc">
+          <div class="scr t-action" aria-hidden="true"><div class="inner" data-ico="dinner"><span class="w">DINNER</span></div></div>
+          <h3 data-i18n="v.action">Action</h3>
+          <div class="rhythm" aria-hidden="true" style="--cyc:2.4s"><i style="--w:18px;--k:0"></i><i style="--w:18px;--k:1"></i></div>
+          <p data-i18n="v.action.d">Two short buzzes. DINNER at home, WAIT outdoors.</p>
+          <span class="how" data-i18n="v.action.h">Parent: hold half a second</span>
+        </div>
+        <div class="vc">
+          <div class="scr t-urgent" aria-hidden="true"><div class="inner" data-ico="come"><span class="w">COME NOW</span></div></div>
+          <h3 data-i18n="v.urgent">Urgent</h3>
+          <div class="rhythm" aria-hidden="true" style="--cyc:3s"><i style="--w:38px;--k:0"></i><i style="--w:38px;--k:1"></i><i style="--w:38px;--k:2"></i></div>
+          <p data-i18n="v.urgent.d">Three long buzzes, repeated every 2.5 seconds until Got it. COME NOW or STOP.</p>
+          <span class="how" data-i18n="v.urgent.h">Parent: hold past 1 second</span>
+        </div>
+        <div class="vc">
+          <div class="scr t-ok" aria-hidden="true"><div class="inner" data-ico="check"><span class="w">GOT IT</span></div></div>
+          <h3 data-i18n="v.gotit">Got it</h3>
+          <div class="rhythm" aria-hidden="true"><span class="ringsw" style="--c:var(--ok)"></span></div>
+          <p data-i18n="v.gotit.d">The child confirms. The Parent ring turns green.</p>
+          <span class="how" data-i18n="v.gotit.h">Child: tap</span>
+        </div>
+        <div class="vc">
+          <div class="scr t-sos" aria-hidden="true"><div class="inner" data-ico="sos"><span class="w">SOS</span></div></div>
+          <h3 data-i18n="v.sos">SOS</h3>
+          <div class="rhythm" aria-hidden="true"><span class="ringsw blink" style="--c:var(--crit)"></span></div>
+          <p data-i18n="v.sos.d">The Parent ring flashes red until the parent taps. It reaches the Parent Band only.</p>
+          <span class="how" data-i18n="v.sos.h">Child: hold 1 second</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="sec-head">
+        <h2 data-i18n="how.h2">Nothing between the two bands</h2>
+      </div>
+      <div class="facts">
+        <div class="fact"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 0 1 14 0"/><path d="M8.5 12a3.5 3.5 0 0 1 7 0"/><circle cx="12" cy="12.5" r="1.2"/><path d="M12 14v6"/></svg></span><h3 data-i18n="how.1.t">A direct link</h3><p data-i18n="how.1.d">The bands talk to each other by radio. No phone, no app, no router.</p></div>
+        <div class="fact"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a8 3 0 0 0 16 0 8 3 0 0 0-16 0z"/><path d="M4 7v10c0 1.7 3.6 3 8 3s8-1.300 8-3V7"/><path d="M3 3l18 18"/></svg></span><h3 data-i18n="how.2.t">Nothing stored online</h3><p data-i18n="how.2.d">No account and no cloud. No data about your child goes to a server.</p></div>
+        <div class="fact"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h6"/></svg></span><h3 data-i18n="how.3.t">Few words, on purpose</h3><p data-i18n="how.3.d">A small, fixed set of plain words: LOOK, DINNER, WAIT, COME NOW, STOP.</p></div>
+        <div class="fact"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2"/><circle cx="12" cy="12" r="6" stroke-dasharray="2 3"/><circle cx="12" cy="12" r="10" stroke-dasharray="2 4"/></svg></span><h3 data-i18n="how.4.t">Short range</h3><p data-i18n="how.4.d">Made for the same home, school or park. We will publish the tested range after the pilot.</p></div>
+      </div>
+    </section>
+
+    <section id="concept">
+      <div class="sec-head">
+        <h2 data-i18n="c.h2">What it is meant to look like</h2>
+        <p data-i18n="c.p">Drawn from the V1 design, not photographed. It is a drawing of the plan, not a picture of a working unit. Photos of real prototypes will replace it as each kit is built.</p>
+      </div>
+      <div class="show" role="img" aria-label="Drawing of the V1 Parent Band and the Child Band in five colours"><div class="it"><div class="band parent"><div class="strap up"></div><div class="body"><div class="led"></div><span class="pbtn" aria-hidden="true"></span><span class="wm">linki</span></div><div class="strap down"></div></div><span class="cap" data-i18n="band.parent">Parent Band</span></div><div class="it"><div class="band child" style="--band:#2A2E40"><div class="strap up"></div><div class="body"><div class="screen t-ping" aria-hidden="true"><div class="inner" data-ico="eye"><span class="w">LOOK</span></div></div><span class="cbtn static"></span></div><div class="strap down"></div></div><span class="cap" data-i18n="c.col.0">Midnight</span></div><div class="it"><div class="band child" style="--band:#E6D5B8"><div class="strap up"></div><div class="body"><div class="screen t-action" aria-hidden="true"><div class="inner" data-ico="dinner"><span class="w">DINNER</span></div></div><span class="cbtn static"></span></div><div class="strap down"></div></div><span class="cap" data-i18n="c.col.1">Sand</span></div><div class="it"><div class="band child" style="--band:#A99BFF"><div class="strap up"></div><div class="body"><div class="screen t-ok" aria-hidden="true"><div class="inner" data-ico="check"><span class="w">GOT IT</span></div></div><span class="cbtn static"></span></div><div class="strap down"></div></div><span class="cap" data-i18n="c.col.2">Lavender</span></div><div class="it"><div class="band child" style="--band:#9FE0BC"><div class="strap up"></div><div class="body"><div class="screen t-ping" aria-hidden="true"><div class="inner" data-ico="eye"><span class="w">LOOK</span></div></div><span class="cbtn static"></span></div><div class="strap down"></div></div><span class="cap" data-i18n="c.col.3">Mint</span></div><div class="it"><div class="band child" style="--band:#86B6E2"><div class="strap up"></div><div class="body"><div class="screen t-action" aria-hidden="true"><div class="inner" data-ico="wait"><span class="w">WAIT</span></div></div><span class="cbtn static"></span></div><div class="strap down"></div></div><span class="cap" data-i18n="c.col.4">Sky</span></div></div>
+      <p class="show-note" data-i18n="c.p2">Final shapes, colours and materials may change after the pilot.</p>
+    </section>
+
+    <section id="build">
+      <div class="sec-head">
+        <h2 data-i18n="b.h2">Build log</h2>
+        <p data-i18n="b.p">What is done, what is next, and what has not started. We update this as things happen.</p>
+      </div>
+      <ul class="log" id="logList"></ul>
+    </section>
+
+    <section id="know">
+      <div class="sec-head">
+        <h2 data-i18n="k.h2">What we know, and what we don't yet</h2>
+      </div>
+      <div class="know">
+        <div>
+          <h3><span class="chip done" data-i18n="k.yes">Checked so far</span><span class="hint" data-i18n="k.yes.n">in software only</span></h3>
+          <ul id="knowYes"></ul>
+        </div>
+        <div>
+          <h3><span class="chip planned" data-i18n="k.no">Not tested yet</span></h3>
+          <ul id="knowNo"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="limits">
+      <div class="sec-head">
+        <h2 data-i18n="l.h2">Limits, plainly</h2>
+      </div>
+      <div class="limbox"><ul class="limits" id="limitList"></ul></div>
+    </section>
+
+    <section id="join" style="padding-bottom:24px">
+      <div class="join">
+        <div>
+          <h2 data-i18n="join.h2">The pilot</h2>
+          <p class="lead" data-i18n="join.p">20 kits go to about 10 families and one school for four weeks. It is free, and you return the kit afterwards. We will publish the results, good or bad, and how we will choose, before we choose.</p>
+          <div class="counter" aria-label="Pilot progress">
+            <div><div class="n" id="cKits">0 / 20</div><div class="l" data-i18n="p.kits">Kits placed</div></div>
+            <div><div class="n" id="cFam">0 / 10</div><div class="l" data-i18n="p.fam">Families chosen</div></div>
+            <div><div class="n" id="cSch">0 / 1</div><div class="l" data-i18n="p.sch">School chosen</div></div>
+          </div>
+          <span data-isl="pilot"></span>
+        </div>
+        <form id="joinForm" novalidate>
+          <label><span data-i18n="f.role">I am</span>
+            <select id="fRole" required>
+              <option value="parent" data-i18n="f.role.parent">A parent or carer</option>
+              <option value="deaf" data-i18n="f.role.deaf">A Deaf or hard-of-hearing adult</option>
+              <option value="school" data-i18n="f.role.school">A school or association</option>
+              <option value="other" data-i18n="f.role.other">Someone else</option>
+            </select>
+          </label>
+          <label><span data-i18n="f.name">Name</span><input id="fName" type="text" autocomplete="name" required></label>
+          <label><span data-i18n="f.email">Email</span><input id="fEmail" type="email" autocomplete="email" required></label>
+          <label><span data-i18n="f.phone">Phone or WhatsApp, optional</span><input id="fPhone" type="tel" autocomplete="tel" inputmode="tel"></label>
+          <label><span data-i18n="f.city">City and country</span><input id="fCity" type="text" autocomplete="address-level2"></label>
+          <label><span data-i18n="f.org">School or association, if that is you</span><input id="fOrg" type="text"></label>
+          <label><span data-i18n="f.age">Your child's age</span>
+            <select id="fAge">
+              <option value="na" data-i18n="f.age.na">Not applicable</option>
+              <option value="u6" data-i18n="f.age.u6">Under 6</option>
+              <option value="6-9" data-i18n="f.age.69">6 to 9</option>
+              <option value="10-13" data-i18n="f.age.1013">10 to 13</option>
+              <option value="14+" data-i18n="f.age.14">14 and over</option>
+            </select>
+          </label>
+          <label><span data-i18n="f.comm">How does your child mainly communicate?</span>
+            <select id="fComm">
+              <option value="na" data-i18n="f.age.na">Not applicable</option>
+              <option value="isl" data-i18n="f.comm.isl">Sign language</option>
+              <option value="spoken" data-i18n="f.comm.sp">Spoken language</option>
+              <option value="both" data-i18n="f.comm.both">Both</option>
+              <option value="other" data-i18n="f.comm.other">Other</option>
+            </select>
+            <span class="hint" data-i18n="f.note">Please do not enter your child's name.</span>
+          </label>
+          <label class="check"><input id="fOk" type="checkbox" required><span data-i18n="f.ok">I agree to be contacted about the pilot. My details are used for that and nothing else.</span></label>
+          <button class="btn" type="submit" data-i18n="join.btn">Apply for the pilot</button>
+          <p class="status" id="formStatus" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="need">
+      <div class="sec-head">
+        <h2 data-i18n="n.h2">Who we still need</h2>
+        <p data-i18n="n.p">We have no Deaf-led advisory group yet, and we want one before any child wears a band.</p>
+      </div>
+      <ul class="need">
+        <li data-i18n="n.1">A Deaf-led advisor or association</li>
+        <li data-i18n="n.2">A pilot school</li>
+        <li data-i18n="n.3">A sign-language reviewer for every video</li>
+        <li data-i18n="n.4">A lawyer or lab for certification advice</li>
+      </ul>
+    </section>
+
+    <section id="faq">
+      <div class="sec-head"><h2 data-i18n="q.h2">Questions</h2></div>
+      <div class="faq" id="faqList"></div>
+    </section>
+  </main>
+
+  <footer>
+    <span data-i18n="foot.1">linki Pilot Edition, V1. A hand-built prototype. Not yet certified, and not for sale.</span>
+    <span data-i18n="foot.2">Instagram and YouTube open on 3 December.</span>
+    <div class="bigmark" aria-hidden="true">linki</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+  var now = function(){ return performance.now(); };
+
+  /* ============ things you edit as the project moves ============ */
+  var PILOT = { kits:0, kitsOf:20, families:0, familiesOf:10, school:0, schoolOf:1 };      // update by hand; never inflate
+  var ISL   = { hero:'', gestures:'', pilot:'' };                                           // YouTube video IDs of the sign-language versions
+  /* Google Form that collects pilot applications (responses go to its linked Sheet).
+     The form uses Google's contact template: Name, Email, Address, Phone number, Comments. */
+  var GFORM = {
+    action: 'https://docs.google.com/forms/d/e/1FAIpQLSe8EXA9UnQ1BXI94bwh-mAnjPfp9a4hjb0Hhp8E3rUhfbHifA/formResponse',
+    fields: { name:'entry.2005620554', email:'entry.1045781291', address:'entry.1065046570', phone:'entry.1166974658', comments:'entry.839337160' }
+  };
+
+  var K = { COME:400, STOP:1100, DT:400, GRACE:300, DEB:40, REPEAT:2500, ACK:10000, LAT:70 };
+  var ARC = 289;
+
+  /* ============ copy ============ */
+  var HI = {
+    'calm':'कम हलचल','nav.join':'पायलट के लिए आवेदन करें',
+    'strip':'V1 पायलट संस्करण। हाथ से बना प्रोटोटाइप। प्रमाणित नहीं। बिक्री के लिए नहीं।',
+    'hero.h1':'आपकी कलाई पर एक टैप। उनकी कलाई पर एक कंपन।',
+    'hero.sub':'linki बधिर और कम सुनने वाले बच्चों और उनके माता-पिता के लिए फ़ोन के बिना चलने वाले दो कलाई-बैंड हैं। दोनों बैंड सीधे आपस में बात करते हैं।',
+    'hero.build':'देखें क्या बन चुका है',
+    'hero.isl':'हमारे हर वीडियो में कैप्शन होंगे। जिस वीडियो में बोलना है, उसमें सांकेतिक भाषा का अनुवाद भी होगा।',
+    'stage.title':'V1 फ़र्मवेयर का वेबसाइट सिमुलेशन','stage.sim':'बटनों को दबाकर रखें। यह वीडियो नहीं है और असली यूनिट भी नहीं।',
+    'reset':'रीसेट','band.parent':'पैरेंट बैंड','band.parent.d':'एक बटन, लाइट रिंग, स्क्रीन नहीं',
+    'band.child':'चाइल्ड बैंड','band.child.d':'स्क्रीन, कंपन, एक बटन',
+    'link.label':'सीधा रेडियो लिंक: न फ़ोन, न राउटर, न इंटरनेट','wave.label':'कंपन',
+    'colour.label':'चाइल्ड बैंड का रंग','live.title':'अभी क्या हुआ',
+    'g.h2':'दो बटन, छह जेस्चर','g.p':'हर पंक्ति वह एक बात है जो बटन कह सकता है। “दिखाओ” दबाएँ, या सिमुलेटर के असली बटन आज़माएँ। आप ऐसा करेंगे तो पंक्ति जल उठेगी।',
+    'who.parent':'पैरेंट बैंड','who.child':'चाइल्ड बैंड','g.play':'दिखाओ',
+    'g.tap.t':'टैप','g.tap.d':'पिंग। बच्चे को एक छोटा कंपन महसूस होता है और LOOK दिखता है।',
+    'g.hold.t':'आधा सेकंड दबाएँ','g.hold.d':'एक्शन। घर में DINNER, बाहर WAIT दिखता है।',
+    'g.long.t':'1 सेकंड से ज़्यादा दबाएँ','g.long.d':'अर्जेंट। घर में COME NOW, बाहर STOP। जब तक बच्चा Got it न दबाए, हर 2.5 सेकंड में फिर कंपन होता है।',
+    'g.double.t':'डबल टैप','g.double.d':'होम और आउटडोर के बीच बदलें। रास्ते में दो पिंग जाते हैं।',
+    'g.ctap.t':'टैप','g.ctap.d':'Got it। अर्जेंट संदेश की पुष्टि। पैरेंट रिंग हरी हो जाती है।',
+    'g.csos.t':'1 सेकंड दबाएँ','g.csos.d':'SOS। जब तक पैरेंट टैप न करे, पैरेंट रिंग लाल चमकती रहती है।',
+    'v.h2':'पाँच संकेत, हर एक अलग','v.p':'हर संकेत की अपनी कंपन-लय और अपनी स्क्रीन है, ताकि उसे महसूस करके और देखकर पहचाना जा सके। बच्चों के लिए इन्हें सीखना आसान है या नहीं, यह पायलट में जाँचा जाएगा।',
+    'v.ping':'पिंग','v.ping.d':'एक छोटा कंपन।','v.ping.h':'पैरेंट: टैप',
+    'v.action':'एक्शन','v.action.d':'दो छोटे कंपन। घर में DINNER, बाहर WAIT।','v.action.h':'पैरेंट: आधा सेकंड दबाएँ',
+    'v.urgent':'अर्जेंट','v.urgent.d':'तीन लंबे कंपन, Got it तक हर 2.5 सेकंड में दोहराए जाते हैं। COME NOW या STOP।','v.urgent.h':'पैरेंट: 1 सेकंड से ज़्यादा दबाएँ',
+    'v.gotit':'Got it','v.gotit.d':'बच्चा पुष्टि करता है। पैरेंट रिंग हरी हो जाती है।','v.gotit.h':'बच्चा: टैप',
+    'v.sos':'SOS','v.sos.d':'जब तक पैरेंट टैप न करे, पैरेंट रिंग लाल चमकती रहती है। यह सिर्फ़ पैरेंट बैंड तक पहुँचता है।','v.sos.h':'बच्चा: 1 सेकंड दबाएँ',
+    'how.h2':'दोनों बैंड के बीच कुछ नहीं',
+    'how.1.t':'सीधा लिंक','how.1.d':'बैंड आपस में रेडियो से बात करते हैं। न फ़ोन, न ऐप, न राउटर।',
+    'how.2.t':'ऑनलाइन कुछ संग्रहीत नहीं','how.2.d':'न अकाउंट, न क्लाउड। आपके बच्चे का कोई डेटा सर्वर पर नहीं जाता।',
+    'how.3.t':'जानबूझकर कम शब्द','how.3.d':'सरल शब्दों का छोटा, तय सेट: LOOK, DINNER, WAIT, COME NOW, STOP।',
+    'how.4.t':'कम दूरी','how.4.d':'एक ही घर, स्कूल या पार्क के लिए बना है। पायलट के बाद हम जाँची हुई दूरी बताएँगे।',
+    'c.h2':'यह कैसा दिखने वाला है','c.p':'V1 डिज़ाइन से बनाया गया चित्र, तस्वीर नहीं। यह योजना का चित्र है, चालू यूनिट की तस्वीर नहीं। हर किट बनने पर असली प्रोटोटाइप की तस्वीरें इसकी जगह लेंगी।',
+    'c.p2':'पायलट के बाद आकार, रंग और सामग्री बदल सकते हैं।','c.col.0':'मिडनाइट','c.col.1':'रेत','c.col.2':'लैवेंडर','c.col.3':'पुदीना','c.col.4':'आसमानी',
+    'b.h2':'निर्माण लॉग','b.p':'क्या हो चुका है, आगे क्या है, और क्या शुरू नहीं हुआ। जैसे-जैसे काम होगा हम इसे अपडेट करेंगे।',
+    'k.h2':'हम क्या जानते हैं, और क्या अभी नहीं','k.yes':'अब तक जाँचा','k.yes.n':'सिर्फ़ सॉफ़्टवेयर में','k.no':'अभी जाँचा नहीं',
+    'l.h2':'सीमाएँ, साफ़ शब्दों में',
+    'join.h2':'पायलट','join.p':'20 किट लगभग 10 परिवारों और एक स्कूल को चार हफ़्ते के लिए जाएँगे। यह मुफ़्त है, और बाद में आप किट लौटा देते हैं। हम नतीजे, अच्छे हों या बुरे, प्रकाशित करेंगे, और चुनने से पहले बताएँगे कि कैसे चुनेंगे।',
+    'p.kits':'किट दिए गए','p.fam':'चुने गए परिवार','p.sch':'चुना गया स्कूल',
+    'f.role':'मैं हूँ','f.role.parent':'माता-पिता या देखभाल करने वाला','f.role.deaf':'बधिर या कम सुनने वाला वयस्क','f.role.school':'स्कूल या संस्था','f.role.other':'कोई और',
+    'f.name':'नाम','f.email':'ईमेल','f.phone':'फ़ोन या WhatsApp, वैकल्पिक','f.city':'शहर','f.org':'स्कूल या संस्था, यदि आप हैं','f.age':'आपके बच्चे की उम्र',
+    'f.age.na':'लागू नहीं','f.age.u6':'6 से कम','f.age.69':'6 से 9','f.age.1013':'10 से 13','f.age.14':'14 और उससे अधिक',
+    'f.comm':'आपका बच्चा मुख्य रूप से कैसे बात करता है?','f.comm.isl':'भारतीय सांकेतिक भाषा','f.comm.sp':'बोली जाने वाली भाषा','f.comm.both':'दोनों','f.comm.other':'अन्य',
+    'f.note':'कृपया अपने बच्चे का नाम न लिखें।',
+    'f.ok':'मैं पायलट के बारे में संपर्क किए जाने के लिए सहमत हूँ। मेरी जानकारी सिर्फ़ इसी के लिए इस्तेमाल होगी।',
+    'join.btn':'पायलट के लिए आवेदन करें',
+    'n.h2':'हमें अभी किसकी ज़रूरत है','n.p':'हमारे पास अभी बधिर समुदाय के नेतृत्व वाला कोई सलाहकार समूह नहीं है, और किसी बच्चे के बैंड पहनने से पहले हम एक चाहते हैं।',
+    'n.1':'बधिर नेतृत्व वाला सलाहकार या संस्था','n.2':'एक पायलट स्कूल','n.3':'हर वीडियो के लिए एक ISL समीक्षक','n.4':'प्रमाणन की सलाह के लिए वकील या लैब',
+    'q.h2':'सवाल',
+    'foot.1':'linki पायलट संस्करण, V1। हाथ से बना प्रोटोटाइप। अभी प्रमाणित नहीं, और बिक्री के लिए नहीं।',
+    'foot.2':'Instagram और YouTube 3 दिसंबर को शुरू होंगे।'
+  };
+
+  var LOG = [
+    { s:'done', d:{en:'Sep 2026', hi:'सितंबर 2026'}, en:'V1 concept design for both bands', hi:'दोनों बैंड का V1 कॉन्सेप्ट डिज़ाइन' },
+    { s:'done', en:'Firmware written for both bands: radio link, gestures and alert levels', hi:'दोनों बैंड के लिए फ़र्मवेयर लिखा गया: रेडियो लिंक, जेस्चर और अलर्ट स्तर' },
+    { s:'done', en:'Software simulator of that firmware, the one on this page', hi:'उस फ़र्मवेयर का सॉफ़्टवेयर सिमुलेटर, जो इस पेज पर है' },
+    { s:'next', en:'Breadboard prototype on real parts', hi:'असली पुर्ज़ों पर ब्रेडबोर्ड प्रोटोटाइप' },
+    { s:'planned', en:'Pocket and sleep tests for accidental taps', hi:'अनजाने टैप के लिए जेब और नींद के परीक्षण' },
+    { s:'planned', en:'Battery run-time and splash tests', hi:'बैटरी चलने के समय और छींटों के परीक्षण' },
+    { s:'planned', en:'Strap fit on small wrists, with families', hi:'छोटी कलाइयों पर स्ट्रैप की फ़िटिंग, परिवारों के साथ' },
+    { s:'planned', en:'Build 20 pilot kits', hi:'20 पायलट किट बनाना' },
+    { s:'planned', en:'Four-week family and school pilot', hi:'चार हफ़्ते का परिवार और स्कूल पायलट' }
+  ];
+  var CHIP = { done:{en:'Done',hi:'हो गया'}, next:{en:'Next',hi:'अगला'}, planned:{en:'Planned',hi:'योजना में'} };
+  var KNOW_YES = [
+    { en:'Tap, hold, long hold and double tap are told apart.', hi:'टैप, होल्ड, लंबा होल्ड और डबल टैप अलग-अलग पहचाने जाते हैं।' },
+    { en:'The Got it and SOS flows work, including SOS with a trembling hand.', hi:'Got it और SOS का क्रम काम करता है, काँपते हाथ से SOS सहित।' },
+    { en:'An urgent message with no answer makes the Parent ring blink slowly.', hi:'जिस अर्जेंट संदेश का जवाब नहीं आता, उस पर पैरेंट रिंग धीरे-धीरे टिमटिमाती है।' }
+  ];
+  var KNOW_NO = [
+    { en:'Radio range in a home, a school and a crowded place', hi:'घर, स्कूल और भीड़ वाली जगह में रेडियो की दूरी' },
+    { en:'Battery life (target: 2 to 3 days)', hi:'बैटरी की उम्र (लक्ष्य: 2 से 3 दिन)' },
+    { en:'Water resistance (target: splashes and hand-washing)', hi:'पानी से बचाव (लक्ष्य: छींटे और हाथ धोना)' },
+    { en:'Drops and everyday knocks', hi:'गिरना और रोज़ की टक्करें' },
+    { en:'Strap fit on small wrists', hi:'छोटी कलाइयों पर स्ट्रैप की फ़िटिंग' },
+    { en:'Accidental taps in a pocket or in sleep. Two stray taps can switch Home and Outdoor.', hi:'जेब में या नींद में अनजाने टैप। दो अनजाने टैप होम और आउटडोर बदल सकते हैं।' },
+    { en:'Whether children understand the five words and icons', hi:'क्या बच्चे पाँच शब्द और आइकन समझते हैं' }
+  ];
+  var LIMITS = [
+    { en:'<strong>Not certified.</strong> Not a medical device. Not for sale.', hi:'<strong>प्रमाणित नहीं।</strong> मेडिकल डिवाइस नहीं। बिक्री के लिए नहीं।' },
+    { en:'<strong>Not a replacement</strong> for watching your child, or for emergency services. linki does not call anyone.', hi:'<strong>बच्चे पर नज़र रखने का विकल्प नहीं</strong>, और आपातकालीन सेवाओं का भी नहीं। linki किसी को कॉल नहीं करता।' },
+    { en:'<strong>SOS reaches only the paired Parent Band</strong>, only within radio range, and only if both batteries are charged.', hi:'<strong>SOS सिर्फ़ जोड़ी वाले पैरेंट बैंड तक पहुँचता है</strong>, सिर्फ़ रेडियो की दूरी के भीतर, और तभी जब दोनों बैटरियाँ चार्ज हों।' },
+    { en:'<strong>No location, no recording, no data stored</strong> by the bands.', hi:'<strong>बैंड न लोकेशन लेते हैं, न रिकॉर्डिंग करते हैं, न कोई डेटा रखते हैं।</strong>' },
+    { en:'<strong>Pilot kits are loaned</strong> under a written agreement and returned afterwards.', hi:'<strong>पायलट किट लिखित समझौते पर उधार दिए जाते हैं</strong> और बाद में लौटाए जाते हैं।' },
+    { en:'<strong>Photos or video of a child</strong> only with written parent consent.', hi:'<strong>बच्चे की तस्वीर या वीडियो</strong> सिर्फ़ माता-पिता की लिखित सहमति से।' }
+  ];
+  var FAQ = [
+    { q:{en:'Does it cost anything?', hi:'क्या इसकी कोई कीमत है?'}, a:{en:'The pilot is free. The kit is loaned and you return it. No sale is planned until the pilot results are in and certification is done.', hi:'पायलट मुफ़्त है। किट उधार दी जाती है और आप उसे लौटा देते हैं। जब तक पायलट के नतीजे नहीं आते और प्रमाणन नहीं होता, बिक्री की कोई योजना नहीं है।'} },
+    { q:{en:'What data does it collect?', hi:'यह कौन-सा डेटा इकट्ठा करता है?'}, a:{en:'The bands collect nothing and send nothing online. The pilot form keeps only what you type, and it is used only to contact you.', hi:'बैंड कुछ इकट्ठा नहीं करते और ऑनलाइन कुछ नहीं भेजते। पायलट फ़ॉर्म में सिर्फ़ वही रहता है जो आप लिखते हैं, और उसका इस्तेमाल सिर्फ़ आपसे संपर्क के लिए होता है।'} },
+    { q:{en:'What if the bands are out of range?', hi:'अगर बैंड दूरी से बाहर हों तो?'}, a:{en:'The message does not arrive. If an urgent message gets no answer, the Parent ring blinks slowly, so the parent knows it may not have been seen.', hi:'संदेश नहीं पहुँचता। अगर किसी अर्जेंट संदेश का जवाब नहीं आता, तो पैरेंट रिंग धीरे-धीरे टिमटिमाती है, ताकि माता-पिता को पता चले कि शायद उसे देखा नहीं गया।'} },
+    { q:{en:'Who is it for?', hi:'यह किसके लिए है?'}, a:{en:'Deaf and hard-of-hearing children who do not have phones, and their parents. We will confirm the right age with each family in the pilot.', hi:'बधिर और कम सुनने वाले बच्चे जिनके पास फ़ोन नहीं है, और उनके माता-पिता। सही उम्र हम पायलट में हर परिवार के साथ तय करेंगे।'} },
+    { q:{en:'When can I buy one?', hi:'मैं इसे कब खरीद सकता हूँ?'}, a:{en:'Not yet. Apply for the pilot to hear first.', hi:'अभी नहीं। सबसे पहले खबर पाने के लिए पायलट के लिए आवेदन करें।'} }
+  ];
+
+  var EN = {};
+  var CAP = {
+    en:{
+      none:'Nothing yet. Press the Parent Band button.',
+      ping:'Tap. Ping sent. The Child Band buzzes once and shows LOOK.',
+      action:'Short hold. Action sent. Two buzzes, and the screen shows {a}.',
+      urgent:'Long hold. Urgent sent. The screen shows {a} and buzzes until the child taps Got it.',
+      gotit:'Child tapped. Got it goes back to the Parent Band, and its ring turns green.',
+      timeout:'No answer yet. The Parent ring blinks slowly: the child may not have seen it.',
+      sos:'Child held the button. SOS reaches the Parent Band, and its ring flashes red.',
+      sosack:'Parent tapped. SOS acknowledged, and the ring stops flashing.',
+      mode:'Double tap. Mode is now {a}. The Child Band shows it.'
+    },
+    hi:{
+      none:'अभी कुछ नहीं। पैरेंट बैंड का बटन दबाएँ।',
+      ping:'टैप। पिंग भेजा गया। चाइल्ड बैंड एक बार कंपन करता है और LOOK दिखाता है।',
+      action:'छोटा होल्ड। एक्शन भेजा गया। दो कंपन, और स्क्रीन पर {a} दिखता है।',
+      urgent:'लंबा होल्ड। अर्जेंट भेजा गया। स्क्रीन पर {a} दिखता है और जब तक बच्चा Got it न दबाए, कंपन होता रहता है।',
+      gotit:'बच्चे ने टैप किया। Got it पैरेंट बैंड तक लौटा, और उसकी रिंग हरी हो गई।',
+      timeout:'अभी जवाब नहीं आया। पैरेंट रिंग धीरे-धीरे टिमटिमा रही है: शायद बच्चे ने नहीं देखा।',
+      sos:'बच्चे ने बटन दबाए रखा। SOS पैरेंट बैंड तक पहुँचा, और उसकी रिंग लाल चमक रही है।',
+      sosack:'पैरेंट ने टैप किया। SOS स्वीकार हुआ, और रिंग का चमकना बंद हो गया।',
+      mode:'डबल टैप। मोड अब {a} है। चाइल्ड बैंड इसे दिखाता है।'
+    }
+  };
+  var EN_OPT = {
+    'fRole:parent':'Parent or carer', 'fRole:deaf':'Deaf or hard-of-hearing adult', 'fRole:school':'School or association', 'fRole:other':'Someone else',
+    'fAge:u6':'Under 6', 'fAge:6-9':'6 to 9', 'fAge:10-13':'10 to 13', 'fAge:14+':'14 and over',
+    'fComm:isl':'Sign language', 'fComm:spoken':'Spoken language', 'fComm:both':'Both', 'fComm:other':'Other'
+  };
+  var FORM_MSG = {
+    en:{ bad:'Please fill in your name and a valid email, and tick the box.', off:'Applications are not open yet, so nothing was sent. Please check back soon.', ok:'Thank you. Your application is in. We will reply by email.', sending:'Sending…', err:'Something went wrong. Please try again.' },
+    hi:{ bad:'कृपया अपना नाम और सही ईमेल भरें, और बॉक्स पर टिक करें।', off:'यह प्रीव्यू अभी किसी साइन-अप सूची से जुड़ा नहीं है, इसलिए कुछ भेजा नहीं गया।', ok:'धन्यवाद। आपका आवेदन मिल गया। हम ईमेल से जवाब देंगे।', sending:'भेजा जा रहा है…', err:'कुछ गड़बड़ हुई। कृपया फिर कोशिश करें।' }
+  };
+
+  var lang = 'en', lines = [];
+  function cap(key, a){ var s = CAP[lang][key] || CAP.en[key] || key; return s.replace('{a}', a == null ? '' : a); }
+  function pick(o){ return o[lang] || o.en; }
+
+  function renderLists(){
+    var ol = $('logList'); ol.innerHTML = '';
+    LOG.forEach(function(e){
+      var li = document.createElement('li'); li.className = e.s;
+      var chip = document.createElement('span'); chip.className = 'chip ' + e.s; chip.textContent = pick(CHIP[e.s]);
+      var t = document.createElement('span'); t.className = 't'; t.textContent = pick(e);
+      li.appendChild(chip); li.appendChild(t);
+      if (e.d){ var d = document.createElement('span'); d.className = 'd'; d.textContent = pick(e.d); li.appendChild(d); }
+      ol.appendChild(li);
+    });
+    [['knowYes', KNOW_YES], ['knowNo', KNOW_NO]].forEach(function(p){
+      var ul = $(p[0]); ul.innerHTML = '';
+      p[1].forEach(function(e){ var li = document.createElement('li'); li.textContent = pick(e); ul.appendChild(li); });
+    });
+    var lu = $('limitList'); lu.innerHTML = '';
+    LIMITS.forEach(function(e){ var li = document.createElement('li'); li.innerHTML = pick(e); lu.appendChild(li); });
+    var fq = $('faqList'); fq.innerHTML = '';
+    FAQ.forEach(function(e){
+      var d = document.createElement('details'); var s = document.createElement('summary'); s.textContent = pick(e.q);
+      var p = document.createElement('p'); p.textContent = pick(e.a); d.appendChild(s); d.appendChild(p); fq.appendChild(d);
+    });
+    $('cKits').textContent = PILOT.kits + ' / ' + PILOT.kitsOf;
+    $('cFam').textContent = PILOT.families + ' / ' + PILOT.familiesOf;
+    $('cSch').textContent = PILOT.school + ' / ' + PILOT.schoolOf;
+  }
+
+  function applyLang(l){
+    lang = l;
+    try{ document.documentElement.lang = l; }catch(e){}
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k = el.getAttribute('data-i18n');
+      if (!(k in EN)) EN[k] = el.textContent;
+      el.textContent = (l === 'hi' && HI[k]) ? HI[k] : EN[k];
+    });
+    document.querySelectorAll('.seg button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === l)); });
+    $('pBtn').setAttribute('aria-label', l === 'hi' ? 'पैरेंट बैंड का बटन। टैप, होल्ड या डबल टैप करें।' : 'Parent Band button. Tap, hold, or double tap.');
+    $('cBtn').setAttribute('aria-label', l === 'hi' ? 'चाइल्ड बैंड का बटन। Got it के लिए टैप करें। SOS के लिए दबाए रखें।' : 'Child Band button. Tap to say Got it. Hold for SOS.');
+    renderLists(); renderLive(); renderIsl();
+    try{ localStorage.setItem('linki-lang', l); }catch(e){}
+  }
+  function say(key, a){ lines.unshift({k:key, a:a}); lines = lines.slice(0,3); renderLive(); }
+  function renderLive(){
+    var ol = $('liveList'); ol.innerHTML = '';
+    if (!lines.length){ var li = document.createElement('li'); li.textContent = cap('none'); li.style.fontWeight = '400'; li.style.color = '#C4CCEB'; ol.appendChild(li); return; }
+    lines.forEach(function(L){ var li = document.createElement('li'); li.textContent = cap(L.k, L.a); ol.appendChild(li); });
+  }
+  function renderIsl(){
+    document.querySelectorAll('[data-isl]').forEach(function(host){
+      host.innerHTML = '';
+      var id = ISL[host.getAttribute('data-isl')];
+      if (!id) return;
+      var a = document.createElement('a'); a.className = 'btn ghost small islbtn'; a.target = '_blank'; a.rel = 'noopener';
+      a.href = 'https://www.youtube.com/watch?v=' + encodeURIComponent(id);
+      a.textContent = lang === 'hi' ? 'ISL में देखें' : 'Watch with sign language';
+      host.appendChild(a);
+    });
+  }
+
+  /* ============ icons + screens ============ */
+  var ICO = {
+    eye:'<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    dinner:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/>',
+    wait:'<rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/>',
+    come:'<path d="M2.5 12h7M6.5 8l4 4-4 4"/><path d="M21.5 12h-7M17.5 8l-4 4 4 4"/>',
+    stop:'<path d="M8.5 3h7L21 8.5v7L15.5 21h-7L3 15.5v-7z"/><path d="M8 12h8"/>',
+    home:'<path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/>',
+    outdoor:'<path d="M12 21v-6"/><path d="M12 3l6 8h-3l4 6H5l4-6H6z"/>',
+    check:'<path d="M5 12.5l4.5 4.5L19 7"/>',
+    sos:'<path d="M12 3l10 18H2z"/><path d="M12 10v5"/><path d="M12 18h.01"/>'
+  };
+  function svg(name){ return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICO[name] + '</svg>'; }
+  document.querySelectorAll('[data-ico]').forEach(function(el){ el.insertAdjacentHTML('afterbegin', svg(el.getAttribute('data-ico'))); });
+  var WORDS = { LOOK:{ico:'eye'}, DINNER:{ico:'dinner'}, WAIT:{ico:'wait'}, 'COME NOW':{ico:'come'}, STOP:{ico:'stop'} };
+
+  /* vibration bars */
+  (function(){ var w = $('wave'); for (var i = 0; i < 30; i++){ var s = document.createElement('span'); s.style.setProperty('--i', i); w.appendChild(s); } })();
+
+  /* ============ state ============ */
+  var pMode = 'HOME', cMode = 'HOME';
+  var P = { isDown:false, btnDown:false, start:0, stopFired:false, waiting:false, lastRel:0, awaiting:false, deadline:0, solidUntil:0, sos:false, timedOutSaid:false };
+  var C = { isDown:false, btnDown:false, hold0:0, relAt:0, sosArmed:false, urgent:false, lastBuzz:0, clearAt:0, view:null };
+  var touched = false, flashT = 0;
+
+  function flash(key){
+    document.querySelectorAll('.grow-row').forEach(function(r){ r.classList.toggle('on', r.getAttribute('data-key') === key); });
+    clearTimeout(flashT);
+    flashT = setTimeout(function(){ document.querySelectorAll('.grow-row').forEach(function(r){ r.classList.remove('on'); }); }, 1900);
+  }
+
+  /* ============ link + haptics ============ */
+  function fly(dir){
+    var p = $('pkt'); p.classList.remove('go-c','go-p'); void p.offsetWidth; p.classList.add(dir === 'c' ? 'go-c' : 'go-p');
+    setTimeout(function(){ p.classList.remove('go-c','go-p'); }, 560);
+  }
+  function toChild(pkt){ fly('c'); setTimeout(function(){ childRecv(pkt); }, K.LAT); }
+  function toParent(pkt){ fly('p'); setTimeout(function(){ parentRecv(pkt); }, K.LAT); }
+
+  var buzzTimers = [];
+  function buzz(pattern){
+    buzzTimers.forEach(clearTimeout); buzzTimers = [];
+    var el = $('cBand'), wv = $('wave'); el.classList.remove('buzzing'); wv.classList.remove('on');
+    var t = 0;
+    pattern.forEach(function(d, i){
+      if (i % 2 === 0){
+        buzzTimers.push(setTimeout(function(){ el.classList.add('buzzing'); wv.classList.add('on'); }, t));
+        buzzTimers.push(setTimeout(function(){ el.classList.remove('buzzing'); wv.classList.remove('on'); }, t + d));
+      }
+      t += d;
+    });
+    try{ if (navigator.vibrate) navigator.vibrate(pattern); }catch(e){}
+  }
+  var PAT = { ping:[180], action:[140,90,140], urgent:[420,140,420,140,420] };
+
+  /* ============ Parent Band (mirrors the firmware) ============ */
+  function parentSend(tier, text){
+    toChild({ tier:tier, text:text, mode:pMode });
+    if (tier === 'urgent'){ P.awaiting = true; P.deadline = now() + K.ACK; P.timedOutSaid = false; }
+  }
+  function parentRecv(pkt){
+    if (pkt.tier === 'ack'){ P.awaiting = false; P.solidUntil = now() + 3000; say('gotit'); }
+    else if (pkt.tier === 'sos'){ P.sos = true; say('sos'); }
+  }
+  function cycleMode(){
+    pMode = pMode === 'HOME' ? 'OUTDOOR' : 'HOME';
+    flash('double');
+    toChild({ tier:'mode', mode:pMode });
+  }
+  var pArc = $('pArc'), pBtn = $('pBtn'), pBand = $('pBand');
+  function tickParent(t){
+    if (P.isDown){
+      if (!P.btnDown){ P.btnDown = true; P.start = t; P.stopFired = false; pBtn.classList.add('down'); }
+      var held = t - P.start;
+      if (held >= K.STOP && !P.stopFired){
+        P.stopFired = true; P.waiting = false;
+        parentSend('urgent', pMode === 'HOME' ? 'COME NOW' : 'STOP'); flash('long');
+        pArc.style.stroke = '#F0705E';
+      }
+      if (!P.stopFired) pArc.style.stroke = held >= K.COME ? '#E8A44A' : '#5AA0FF';
+      pArc.style.strokeDashoffset = String(ARC * (1 - Math.min(1, held / K.STOP)));
+    } else if (P.btnDown){
+      P.btnDown = false; pBtn.classList.remove('down');
+      var h = t - P.start;
+      pArc.style.strokeDashoffset = String(ARC);
+      if (!P.stopFired){
+        if (h < K.COME){
+          if (P.sos){ P.sos = false; say('sosack'); }
+          else {
+            var second = P.waiting && (t - P.lastRel) < K.DT;
+            parentSend('ping', 'LOOK');
+            if (second){ P.waiting = false; cycleMode(); }
+            else { P.waiting = true; P.lastRel = t; flash('tap'); }
+          }
+        } else {
+          parentSend('action', pMode === 'HOME' ? 'DINNER' : 'WAIT'); flash('hold');
+          P.waiting = false;
+        }
+      }
+    }
+    if (P.waiting && (t - P.lastRel) >= K.DT) P.waiting = false;
+
+    var led = 'idle';
+    if (P.sos) led = 'sos';
+    else if (P.solidUntil > t) led = 'solid';
+    else if (P.awaiting){
+      if (t > P.deadline){ led = 'timeout'; if (!P.timedOutSaid){ P.timedOutSaid = true; say('timeout'); } }
+      else led = 'awaiting';
+    }
+    if (pBand.getAttribute('data-led') !== led) pBand.setAttribute('data-led', led);
+  }
+
+  /* ============ Child Band (mirrors the firmware) ============ */
+  var cScreen = $('cScreen'), cArc = $('cArc'), cBtn = $('cBtn');
+  function childRecv(pkt){
+    cMode = pkt.mode || cMode;
+    if (pkt.tier === 'mode'){ C.view = { cls:'t-ok', mode:true }; C.clearAt = now() + 1600; renderChild(); buzz(PAT.ping); say('mode', cMode); return; }
+    var w = WORDS[pkt.text] || WORDS.LOOK;
+    if (pkt.tier === 'ping'){ C.view = { word:pkt.text, ico:w.ico, cls:'t-ping' }; C.clearAt = now() + 2500; buzz(PAT.ping); say('ping'); }
+    else if (pkt.tier === 'action'){ C.view = { word:pkt.text, ico:w.ico, cls:'t-action' }; C.clearAt = now() + 3500; buzz(PAT.action); say('action', pkt.text); }
+    else if (pkt.tier === 'urgent'){ C.urgent = true; C.lastBuzz = now(); C.view = { word:pkt.text, ico:w.ico, cls:'t-urgent' }; C.clearAt = 0; buzz(PAT.urgent); say('urgent', pkt.text); }
+    renderChild();
+  }
+  function renderChild(){
+    var v = C.view, html, cls = '';
+    if (!v){
+      html = '<div class="inner idle">' + svg(cMode === 'HOME' ? 'home' : 'outdoor') + '<span class="s">' + cMode + '</span></div>';
+    } else if (v.mode){
+      cls = v.cls; html = '<div class="inner">' + svg(cMode === 'HOME' ? 'home' : 'outdoor') + '<span class="w" style="font-size:1em">' + cMode + '</span></div>';
+    } else {
+      cls = v.cls; html = '<div class="inner">' + svg(v.ico) + '<span class="w">' + v.word + '</span></div>';
+    }
+    cScreen.className = 'screen ' + cls;
+    cScreen.innerHTML = html;
+  }
+  function showView(word, ico, cls, ms){ C.view = { word:word, ico:ico, cls:cls }; C.clearAt = now() + ms; renderChild(); }
+  function tickChild(t){
+    if (C.isDown){
+      if (C.hold0 === 0) C.hold0 = t;
+      C.relAt = 0; C.btnDown = true; cBtn.classList.add('down');
+      var held = t - C.hold0;
+      if (held >= K.STOP && !C.sosArmed){
+        C.sosArmed = true; C.urgent = false;
+        toParent({ tier:'sos' }); flash('csos');
+        showView('SOS', 'sos', 't-sos', 2200);
+        buzz(PAT.action);
+      } else if (!C.sosArmed){
+        cArc.style.strokeDashoffset = String(ARC * (1 - Math.min(1, held / K.STOP)));
+      }
+    } else {
+      if (C.btnDown){ C.relAt = t; C.btnDown = false; cBtn.classList.remove('down'); }
+      if (C.relAt !== 0 && (t - C.relAt) > K.GRACE){
+        var total = C.relAt - C.hold0;
+        if (!C.sosArmed && total > K.DEB && total < K.STOP && C.urgent){
+          C.urgent = false;
+          toParent({ tier:'ack' }); flash('ctap');
+          showView('GOT IT', 'check', 't-ok', 1500);
+        }
+        C.hold0 = 0; C.sosArmed = false; C.relAt = 0;
+        cArc.style.strokeDashoffset = String(ARC);
+      }
+    }
+    if (C.urgent && (t - C.lastBuzz) > K.REPEAT){ C.lastBuzz = t; buzz(PAT.urgent); }
+    if (!C.urgent && C.clearAt !== 0 && t > C.clearAt && !C.btnDown){ C.clearAt = 0; C.view = null; renderChild(); }
+  }
+  function loop(){ var t = now(); tickParent(t); tickChild(t); requestAnimationFrame(loop); }
+
+  /* ============ inputs ============ */
+  function touchedOnce(){ if (!touched){ touched = true; pBtn.removeAttribute('data-hint'); } }
+  function bindHold(btn, setDown){
+    btn.addEventListener('pointerdown', function(e){ try{ btn.setPointerCapture(e.pointerId); }catch(_){} setDown(true); touchedOnce(); e.preventDefault(); });
+    btn.addEventListener('pointerup', function(){ setDown(false); });
+    btn.addEventListener('pointercancel', function(){ setDown(false); });
+    btn.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+    btn.addEventListener('keydown', function(e){ if ((e.key === ' ' || e.key === 'Enter') && !e.repeat){ setDown(true); touchedOnce(); e.preventDefault(); } });
+    btn.addEventListener('keyup', function(e){ if (e.key === ' ' || e.key === 'Enter'){ setDown(false); e.preventDefault(); } });
+    btn.addEventListener('blur', function(){ setDown(false); });
+  }
+  bindHold(pBtn, function(v){ P.isDown = v; });
+  bindHold(cBtn, function(v){ C.isDown = v; });
+
+  /* ============ scripted gestures ============ */
+  var busy = false;
+  function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+  function press(who, ms){ var set = who === 'p' ? function(v){ P.isDown = v; } : function(v){ C.isDown = v; }; set(true); return wait(ms).then(function(){ set(false); }); }
+  var PLAY = {
+    tap:function(){ return press('p', 90); },
+    hold:function(){ return press('p', 650); },
+    long:function(){ return press('p', 1400); },
+    double:function(){ return press('p', 90).then(function(){ return wait(140); }).then(function(){ return press('p', 90); }); },
+    ctap:function(){
+      var pre = C.urgent ? Promise.resolve() : press('p', 1400).then(function(){ return wait(1000); });
+      return pre.then(function(){ return press('c', 130); });
+    },
+    csos:function(){ return press('c', 1400); }
+  };
+  document.querySelectorAll('.play').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (busy) return; busy = true; touchedOnce();
+      var key = b.getAttribute('data-play');
+      document.querySelectorAll('.play').forEach(function(x){ x.disabled = true; });
+      var st = $('try').getBoundingClientRect();
+      if (st.top < 90 || st.bottom > window.innerHeight) $('try').scrollIntoView({ block:'center', behavior:'smooth' });
+      PLAY[key]().then(function(){ return wait(250); }).then(function(){ busy = false; document.querySelectorAll('.play').forEach(function(x){ x.disabled = false; }); });
+    });
+  });
+  $('reset').addEventListener('click', function(){
+    pMode = 'HOME'; cMode = 'HOME';
+    P.sos = false; P.awaiting = false; P.solidUntil = 0; P.waiting = false;
+    C.urgent = false; C.view = null; C.clearAt = 0; C.sosArmed = false; C.hold0 = 0; C.relAt = 0;
+    buzz([]); lines = []; renderChild(); renderLive();
+  });
+
+  /* ============ colour swatches ============ */
+  var COLS = [
+    {n:'Midnight', h:'#2A2E40'}, {n:'Sand', h:'#E6D5B8'}, {n:'Lavender', h:'#A99BFF'},
+    {n:'Mint', h:'#9FE0BC'}, {n:'Sky', h:'#86B6E2'}
+  ];
+  var sw = $('swatches');
+  COLS.forEach(function(c, i){
+    var b = document.createElement('button'); b.type = 'button'; b.style.setProperty('--c', c.h);
+    b.setAttribute('aria-label', c.n); b.setAttribute('aria-pressed', String(i === 2));
+    b.addEventListener('click', function(){
+      $('cBand').style.setProperty('--band', c.h); document.querySelector('.stage').style.setProperty('--glow', c.h === '#2A2E40' ? '#5B6BFF' : c.h);
+      sw.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
+      b.setAttribute('aria-pressed', 'true');
+    });
+    sw.appendChild(b);
+  });
+
+  /* ============ calm motion ============ */
+  var calmBtn = $('calm');
+  function setCalm(on){
+    document.documentElement.setAttribute('data-calm', on ? '1' : '0');
+    calmBtn.setAttribute('aria-pressed', String(on));
+    try{ localStorage.setItem('linki-calm', on ? '1' : '0'); }catch(e){}
+  }
+  calmBtn.addEventListener('click', function(){ setCalm(calmBtn.getAttribute('aria-pressed') !== 'true'); });
+  var calmSaved = null; try{ calmSaved = localStorage.getItem('linki-calm'); }catch(e){}
+  setCalm(calmSaved === null ? (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) : calmSaved === '1');
+
+  /* ============ form ============ */
+  $('joinForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var st = $('formStatus'), M = FORM_MSG[lang];
+    var name = $('fName').value.trim(), mail = $('fEmail').value.trim();
+    if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail) || !$('fOk').checked){ st.textContent = M.bad; return; }
+    if (!GFORM.action){ st.textContent = M.off; return; }
+    var label = function(id){ var el = $(id); return el.value === 'na' ? 'Not applicable' : (EN_OPT[id + ':' + el.value] || el.value); };
+    var org = $('fOrg').value.trim();
+    var vals = {
+      name: name,
+      email: mail,
+      address: $('fCity').value.trim() || 'Not given',
+      phone: $('fPhone').value.trim() || 'Not given',
+      comments: ['Role: ' + label('fRole'), 'Child age: ' + label('fAge'), 'Child communicates: ' + label('fComm'),
+                 'School or association: ' + (org || 'None'), 'Page language: ' + lang].join(' | ')
+    };
+    var body = new URLSearchParams();
+    Object.keys(GFORM.fields).forEach(function(k){ body.append(GFORM.fields[k], vals[k]); });
+    var btn = $('joinForm').querySelector('button[type=submit]'); btn.disabled = true;
+    st.textContent = M.sending;
+    // Google Forms does not allow reading its reply from another site, so a sent request counts as success.
+    fetch(GFORM.action, { method:'POST', mode:'no-cors', body: body })
+      .then(function(){ st.textContent = M.ok; $('joinForm').reset(); })
+      .catch(function(){ st.textContent = M.err; })
+      .then(function(){ btn.disabled = false; });
+  });
+
+  document.querySelectorAll('.seg button').forEach(function(b){ b.addEventListener('click', function(){ applyLang(b.getAttribute('data-lang')); }); });
+
+  /* ============ start ============ */
+  var saved = 'en'; try{ saved = localStorage.getItem('linki-lang') || 'en'; }catch(e){}
+  applyLang('en');
+  renderChild();
+  requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>
